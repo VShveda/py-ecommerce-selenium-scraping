@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from urllib.parse import urljoin
 
 from selenium import webdriver
-from selenium.common import NoSuchElementException
+from selenium.common import NoSuchElementException, TimeoutException
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
@@ -79,9 +79,9 @@ def scrape_product_page(driver: WebDriver, url: str) -> list[Product]:
             )
             more_button.click()
             time.sleep(0.2)
-        except NoSuchElementException:
+        except TimeoutException:
             break
-        except Exception:
+        except NoSuchElementException:
             break
 
     products = driver.find_elements(By.CSS_SELECTOR, ".product-wrapper")
